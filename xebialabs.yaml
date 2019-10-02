@@ -1,0 +1,54 @@
+---
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: Applications/Cloud/Terraform/Terraform/1.0.3
+  type: udm.DeploymentPackage
+  orchestrator:
+  - sequential-by-container
+  deployables:
+  - name: web
+    type: terraform.Module
+    boundTemplates:
+    - Applications/Cloud/Terraform/Terraform/1.0.3/template-host-front    
+    inputVariables:
+      private_key_path: /tmp/mykeys/myapp.pem
+      public_key_path: /tmp/mykeys/myapp.pub
+      key_name: myapp-key
+    automaticDictionary: True
+    generateCIsFromResources: false
+    file: !file "artifacts/web"
+  - name: myapp.pub
+    type: file.File
+    targetPath: /tmp/mykeys
+    targetPathShared: True
+    createTargetPath: True
+    file: !file "artifacts/myapp.pub/myapp.pub"
+  - name: myapp.pem
+    type: file.File
+    targetPath: /tmp/mykeys
+    targetPathShared: True
+    createTargetPath: True
+    file: !file "artifacts/myapp.pem/myapp.pem"
+  templates:
+  - name: template-host-front
+    type: template.overthere.SshHost
+    instanceName: host-front
+    childTemplates:
+    - name: tomcat-front
+      type: template.tomcat.Server
+      childTemplates:
+      - name: tomcat-front.vh
+        type: template.tomcat.VirtualHost
+      home: /var/lib/tomcat8
+      startCommand: service tomcat8 start
+      stopCommand: service tomcat8 stop
+    - name: tomcat-tester
+      type: template.smoketest.Runner
+    os: UNIX
+    connectionType: SUDO
+    address: '{{%outputVariables.host_public_ip%}}'
+    username: ubuntu
+    privateKeyFile: /tmp/mykeys/myapp.pem
+    sudoUsername: root
+   
