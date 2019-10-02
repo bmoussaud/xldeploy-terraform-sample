@@ -22,10 +22,7 @@ output "vnet_name" {
   description = "Name of the Virtual Network created by terraform"
 }
 
-output "vnet_address_space" {
-  value = "${azurerm_virtual_network.windows-vnet.address_space}"
-  description = "Address Space of the Virtual Network created by terraform"
-}
+
 
 output "subnet_name" {
   value = "${azurerm_subnet.windows-subnet.name}"
@@ -38,12 +35,12 @@ output "subnet_address_prefix" {
 }
 
 output "vm_name" {
-  value = "${azurerm_virtual_machine.web_server.*.name}"
-  description = "Name of Virtual Machines created by terraform"
+  value = compact(coalescelist(azurerm_virtual_machine.web_server.*.name, [""]))[0]
+  description = "Name of the 1st Virtual Machines created by terraform"
 }
 
 output "vm_public_ip" {
-  value = "${azurerm_public_ip.windows-pip.*.ip_address}"
-  description = "Public IP Addresses of Virtual Machines created by terraform"
+  value =  compact(coalescelist(azurerm_public_ip.windows-pip.*.ip_address, [""]))[0]  
+  description = "1st Public IP Addresses of Virtual Machines created by terraform"
 }
   

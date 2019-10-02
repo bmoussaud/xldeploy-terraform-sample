@@ -32,7 +32,7 @@ variable "location" {
 
 variable "virtual_network_name" {
   description = "The name for your virtual network."
-  default     = "bmo-neh"
+  default     = "bmo-vn"
 }
 
 variable "address_space" {
