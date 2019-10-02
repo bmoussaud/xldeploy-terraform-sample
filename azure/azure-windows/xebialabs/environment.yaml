@@ -1,0 +1,15 @@
+apiVersion: xl-deploy/v1
+kind: Environments
+spec:
+- name: Cloud
+  type: core.Directory
+  children:
+  - name: Terraform
+    type: core.Directory
+    children: 
+    - name: Terraform Azure
+      type: udm.Environment
+      members:
+      - ~Infrastructure/Cloud/Terraform/terraform-host/terraform-client 
+      dictionaries:
+      - ~Environments/Cloud/Terraform/tf_azure.conf

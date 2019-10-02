@@ -1,0 +1,25 @@
+
+---
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: Cloud
+  type: core.Directory
+  children:
+  - name: Terraform
+    type: core.Directory
+    children:
+    - name: terraform-azure-windows
+      type: udm.Application
+      children:
+      - name: 1.0.0
+        type: udm.DeploymentPackage
+        deployables:
+        - name: az
+          type: terraform.Module    
+          inputVariables:
+            servers: '{{servers}}'
+            subscription_id: '{{subscription_id}}'
+            tenant_id: '{{tenant_id}}'
+          file: !file "../terraform"
+

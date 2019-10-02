@@ -1,44 +1,8 @@
-apiVersion: xl-deploy/v1
-kind: Environments
-spec:
-  - name: Environments/Cloud/tf_azure.conf
-    type: udm.Dictionary
-    entries:
-      subscription_id: !value azure_subscription_id
-      tenant_id: !value azure_tenant_id
-      servers: 1      
-    encryptedEntries:
-      subscription_id_x: tiger  
----
-apiVersion: xl-deploy/v1
-kind: Applications
-spec:
-- name: Applications/Cloud/Terraform/terraform-azure-windows/1.0.0
-  type: udm.DeploymentPackage
-  deployables:
-  - name: az
-    type: terraform.Module    
-    inputVariables:
-      servers: '{{servers}}'
-      subscription_id: '{{subscription_id}}'
-      tenant_id: '{{tenant_id}}'
-    file: !file "terraform"
----
-apiVersion: xl-deploy/v1
-kind: Infrastructure
-spec:
-- name: Infrastructure/Terraform/ /aztfclient
-  type: terraform.TerraformClient
-  workingDirectory: /tmp/terraform_by_xldeploy_for_az
----
-apiVersion: xl-deploy/v1
-kind: Environments
-spec:
-  - name: Environments/Cloud/TFAzure
-    type: udm.Environment
-    members:
-    - ~Infrastructure/Terraform/mymachine/aztfclient 
-    dictionaries:
-    - ~Environments/Cloud/tf_azure.conf
-    
-
+apiVersion: xl/v1
+kind: Import
+metadata:
+ imports:
+   - xebialabs/infrastructure.yaml
+   - xebialabs/configuration.yaml
+   - xebialabs/environment.yaml
+   - xebialabs/application.yaml
