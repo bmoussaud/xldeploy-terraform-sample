@@ -1,0 +1,19 @@
+apiVersion: xl-deploy/v1
+kind: Environments
+spec:
+- name: Cloud
+  type: core.Directory
+  children:
+  - name: Terraform
+    type: core.Directory
+    children:
+    - name: tf_aws.conf
+      type: udm.Dictionary
+      entries:        
+        servers: 1  
+        instance_type: t2.micro
+        ami_id: ami-2e1ef954
+        aws_region: us-west-1    
+      encryptedEntries:        
+        aws_access_key_id: !value aws_access_key_id
+        aws_secret_access_key: !value aws_secret_access_key

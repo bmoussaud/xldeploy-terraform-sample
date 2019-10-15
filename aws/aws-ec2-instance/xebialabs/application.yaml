@@ -1,0 +1,24 @@
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: Cloud
+  type: core.Directory
+  children:
+  - name: Terraform
+    type: core.Directory
+    children:
+    - name: terraform-aws-ec2
+      type: udm.Application
+      children:
+      - name: 1.0.0
+        type: udm.DeploymentPackage
+        deployables:
+        - name: ec2-instance
+          type: terraform.Module    
+          inputVariables:
+            instance_type: '{{instance_type}}'
+            ami_id: '{{ami_id}}'
+            aws_region: '{{aws_region}}'
+            name: Benoit Instance
+          file: !file "../terraform"
+
