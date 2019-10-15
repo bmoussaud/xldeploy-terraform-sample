@@ -1,0 +1,9 @@
+apiVersion: xl-deploy/v1
+kind: Deployment
+spec:
+  package: Applications/Cloud/Terraform/terraform-aws-ec2/1.0.0
+  environment: Environments/Cloud/Terraform/Terraform AWS
+  onSuccessPolicy: ARCHIVE
+  orchestrators:
+    - sequential-by-deployed
+

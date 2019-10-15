@@ -12,8 +12,8 @@ spec:
       entries:        
         servers: 1  
         instance_type: t2.micro
-        ami_id: ami-2e1ef954
-        aws_region: us-west-1    
+        ami_id: ami-087855b6c8b59a9e4
+        aws_region: eu-west-3    
       encryptedEntries:        
         aws_access_key_id: !value aws_access_key_id
         aws_secret_access_key: !value aws_secret_access_key
